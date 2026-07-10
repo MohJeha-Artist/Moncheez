@@ -58,7 +58,7 @@
       position: absolute; 
       inset: 0;
       /* background: linear-gradient(145deg, #1a0533 0%, #0d1b4b 60%, #0a0f1a 100%); */
-      background-image: url('https://i.ibb.co/nqJ5NSV4/background.webp');
+      background-image: url('https://i.ibb.co/gZF468dK/background.webp');
       background-size: cover;
       background-position: center;
       transition: background 0.5s ease;
@@ -118,7 +118,7 @@
       animation: fadeInDown 0.6s ease both;
     }
     .hero-logo img {
-      width: 90%;
+      width: 110%;
       max-width: 720px;
       height: auto;
       object-fit: contain;
@@ -291,86 +291,7 @@
       text-transform: uppercase;
     }
 
-    /* ─── Background Upload UI ─────────────────────────── */
-    .upload-fab {
-      position: absolute;
-      top: 14px; right: 14px;
-      z-index: 10;
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.25);
-      backdrop-filter: blur(10px);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s ease, transform 0.2s ease;
-    }
-    .upload-fab:hover { background: rgba(255,255,255,0.22); transform: scale(1.1); }
-    .upload-fab svg { width: 18px; height: 18px; fill: #fff; }
 
-    .upload-panel {
-      position: absolute;
-      top: 60px; right: 14px;
-      z-index: 10;
-      background: rgba(20, 20, 35, 0.88);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 16px;
-      padding: 16px;
-      width: 200px;
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.6);
-      animation: slideDown 0.2s ease;
-    }
-    .upload-panel.open { display: flex; }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .upload-panel label {
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.55);
-      font-weight: 400;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .upload-btn {
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px 12px;
-      background: rgba(255,255,255,0.07);
-      border: 1px dashed rgba(255,255,255,0.25);
-      border-radius: 10px;
-      color: #fff;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-    .upload-btn:hover { background: rgba(255,255,255,0.14); }
-    .upload-btn svg { width: 16px; height: 16px; fill: var(--accent); flex-shrink: 0; }
-
-    #bg-file-input { display: none; }
-
-    .reset-btn {
-      padding: 8px 12px;
-      background: rgba(255,80,80,0.12);
-      border: 1px solid rgba(255,80,80,0.25);
-      border-radius: 10px;
-      color: rgba(255,120,120,0.9);
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s ease;
-      text-align: center;
-    }
-    .reset-btn:hover { background: rgba(255,80,80,0.22); }
 
 
   </style>
@@ -436,73 +357,5 @@
   </footer>
 
 </div>
-
-<script>
-  const uploadFab   = document.getElementById('uploadFab');
-  const uploadPanel = document.getElementById('uploadPanel');
-  const chooseBtn   = document.getElementById('chooseImgBtn');
-  const fileInput   = document.getElementById('bg-file-input');
-  const resetBtn    = document.getElementById('resetBgBtn');
-  const bgLayer     = document.getElementById('bgLayer');
-
-  // Toggle panel
-  uploadFab.addEventListener('click', (e) => {
-    e.stopPropagation();
-    uploadPanel.classList.toggle('open');
-  });
-
-  // Close panel on outside click
-  document.addEventListener('click', (e) => {
-    if (!uploadPanel.contains(e.target) && e.target !== uploadFab) {
-      uploadPanel.classList.remove('open');
-    }
-  });
-
-  // Trigger file input
-  chooseBtn.addEventListener('click', () => fileInput.click());
-
-  // Handle file selection
-  fileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      bgLayer.style.backgroundImage = `url('${ev.target.result}')`;
-      bgLayer.style.backgroundSize  = 'cover';
-      bgLayer.style.backgroundPosition = 'center';
-      uploadPanel.classList.remove('open');
-    };
-    reader.readAsDataURL(file);
-    fileInput.value = '';
-  });
-
-  // Reset background to default
-  const DEFAULT_BG = "url('assets/background.webp')";
-  resetBtn.addEventListener('click', () => {
-    bgLayer.style.backgroundImage = DEFAULT_BG;
-    bgLayer.style.backgroundSize  = 'cover';
-    bgLayer.style.backgroundPosition = 'center';
-    uploadPanel.classList.remove('open');
-  });
-
-  // Drag & Drop onto card
-  const card = document.getElementById('card');
-  card.addEventListener('dragover', (e) => { e.preventDefault(); card.style.outline = '2px dashed rgba(180,124,255,0.7)'; });
-  card.addEventListener('dragleave', ()  => { card.style.outline = ''; });
-  card.addEventListener('drop', (e) => {
-    e.preventDefault();
-    card.style.outline = '';
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        bgLayer.style.backgroundImage = `url('${ev.target.result}')`;
-        bgLayer.style.backgroundSize  = 'cover';
-        bgLayer.style.backgroundPosition = 'center';
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-</script>
 </body>
 </html>

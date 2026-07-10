@@ -27,24 +27,17 @@
     }
 
     html, body {
-      height: 100%;
+      min-height: 100%;
       background: #0f0f14;
       font-family: 'Outfit', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    /* ─── Card (9 × 16) ────────────────────────────────── */
+    /* ─── Full-page wrapper ──────────────────────────────── */
     .card-wrap {
       position: relative;
-      width: min(100vw, calc(100vh * 9 / 16));
-      height: min(100vh, calc(100vw * 16 / 9));
-      max-width: 430px;
-      max-height: calc(430px * 16 / 9);
-      border-radius: 28px;
+      width: 100%;
+      min-height: 100vh;
       overflow: hidden;
-      box-shadow: 0 20px 80px rgba(0,0,0,0.7);
     }
 
     /* ─── Background Layer ─────────────────────────────── */
@@ -91,30 +84,58 @@
     .content {
       position: relative;
       z-index: 2;
-      height: 100%;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 5% 8%;
+      padding: 60px 24px 0;
       gap: 0;
+      max-width: 480px;
+      margin: 0 auto;
     }
 
-    /* Avatar / Profile pic area */
-    .avatar-wrap {
-      width: 90px; height: 90px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.4rem;
-      margin-bottom: 14px;
-      box-shadow: 0 0 0 4px rgba(255,255,255,0.15), var(--shadow);
-      animation: pulse-ring 3s ease-in-out infinite;
+    /* ─── Hero Logo ──────────────────────────────────── */
+    .hero-logo {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 36px;
+      animation: fadeInDown 0.6s ease both;
+    }
+    .hero-logo img {
+      width: 90%;
+      max-width: 720px;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5));
     }
 
-    @keyframes pulse-ring {
-      0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.45); }
-      50%       { box-shadow: 0 0 0 8px rgba(180,124,255,0.3), 0 8px 32px rgba(0,0,0,0.45); }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Chips Image ────────────────────────────────── */
+    .chips-img {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      display: block;
+      margin-top: 40px;
+      animation: fadeInUp 0.7s ease 0.3s both;
+    }
+    .chips-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .name {
@@ -317,18 +338,7 @@
     }
     .reset-btn:hover { background: rgba(255,80,80,0.22); }
 
-    /* ─── Responsive tiny screens ──────────────────────── */
-    @media (max-height: 500px) {
-      .avatar-wrap { width: 60px; height: 60px; font-size: 1.6rem; margin-bottom: 8px; }
-      .name { font-size: 1.1rem; }
-      .bio  { margin-bottom: 14px; }
-      .divider { margin-bottom: 14px; }
-      .links { gap: 8px; }
-      .link-btn { padding: 10px 14px; }
-      .icon-wrap { width: 30px; height: 30px; }
-      .icon-wrap svg { width: 16px; height: 16px; }
-      .footer { margin-top: 14px; }
-    }
+
   </style>
 </head>
 <body>
@@ -342,28 +352,9 @@
   <div class="orb orb2"></div>
   <div class="orb orb3"></div>
 
-  <!-- Upload FAB -->
-  <button class="upload-fab" id="uploadFab" title="Change background" aria-label="Change background image">
-    <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-8.5-5.5l-2.5 3.01L7.5 14l-3.5 4.5h16l-5-6.5z"/></svg>
-  </button>
-
-  <!-- Upload Panel -->
-  <div class="upload-panel" id="uploadPanel">
-    <label>Background Image</label>
-    <button class="upload-btn" id="chooseImgBtn">
-      <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
-      Choose Image
-    </button>
-    <input type="file" id="bg-file-input" accept="image/*" />
-    <button class="reset-btn" id="resetBgBtn">Reset to Default</button>
-  </div>
-
   <!-- Main Content -->
   <div class="content">
-    <div class="avatar-wrap">🎵</div>
-    <div class="name">Moncheez</div>
-    <div class="bio">Follow me on social media ✨</div>
-    <div class="divider"></div>
+    <div class="hero-logo"><img src="assets/Logo.webp" alt="Moncheez Logo" /></div>
 
     <div class="links">
       <!-- Facebook -->
@@ -402,9 +393,9 @@
         <span class="link-arrow">›</span>
       </a>
     </div>
-
-    <div class="footer">@moncheez</div>
   </div>
+
+  <div class="chips-img"><img src="assets/Chips.webp" alt="Moncheez Chips" /></div>
 </div>
 
 <script>

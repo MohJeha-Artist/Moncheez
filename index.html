@@ -27,7 +27,14 @@
       --wa: #25d366;
     }
 
-    html, body {
+    body::-webkit-scrollbar {
+    display: none;
+  }
+    
+    html, body { 
+
+
+
       min-height: 100%;
       background: #0f0f14;
       font-family: 'Outfit', sans-serif;
@@ -54,16 +61,21 @@
     }
 
     /* ─── Background Layer ─────────────────────────────── */
-    .bg-layer {
-      position: absolute; 
-      inset: 0;
-      /* background: linear-gradient(145deg, #1a0533 0%, #0d1b4b 60%, #0a0f1a 100%); */
-      background-image: url('https://i.ibb.co/gZF468dK/background.webp');
-      background-size: cover;
-      background-position: center;
-      transition: background 0.5s ease;
-      z-index: 0;
-    }
+ .bg-layer {
+  position: absolute; 
+  inset: 0; 
+  width: 100%; 
+  background: linear-gradient(145deg, #1a0533 0%, #0d1b4b 60%, #0a0f1a 100%);
+  background-image: url('assets/background_.webp');
+  
+  /* THIS IS THE FIX */
+  background-size: 100% auto; 
+  background-position: top center; 
+  background-repeat: no-repeat;
+  
+  transition: background 0.5s ease;
+  z-index: 0;
+}
     .bg-layer::after {
       content: '';
       position: absolute; inset: 0;
@@ -73,6 +85,18 @@
         rgba(0,0,0,0.15) 40%,
         rgba(0,0,0,0.55) 100%
       );
+    }
+
+
+        .paragraph{
+      
+text-align: center; 
+max-width: 600px; 
+margin: 0 auto; 
+margin-bottom: 30px; 
+padding: 0 15px; 
+color: #fff; 
+text-shadow: 0 0 10px rgba(0, 0, 0, 1),0 0 20px rgba(0, 0, 0, 1), 0 0 40px rgba(0, 0, 0, 1);
     }
 
     /* ─── Animated glow orbs ───────────────────────────── */
@@ -111,6 +135,7 @@
     /* ─── Hero Logo ──────────────────────────────────── */
     .hero-logo {
       width: 100%;
+      margin-top: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -311,6 +336,16 @@
   <div class="content">
     <div class="hero-logo"><img src="https://i.ibb.co/6cJLZVj7/Logo.webp" alt="Moncheez Logo" /></div>
 
+    <div class="paragraph">
+      <p>
+        Welcome to the ultimate crunch. 
+        <br> MONCHEEZ snack chips are packed with intense flavor for happy snacking 
+        <br><br>  
+        <span style="color:rgb(255, 106, 0)"> keep an eye out for awesome surprises hidden inside! </span>
+        <br><br> Join the community and check out our latest drops in the links below.
+      </p>
+    </div>
+
     <div class="links">
       <!-- Facebook -->
       <a class="link-btn btn-fb" href="https://www.facebook.com/profile.php?id=61590408615632&mibextid=wwXIfr" target="_blank" rel="noopener" id="link-facebook">
@@ -357,5 +392,22 @@
   </footer>
 
 </div>
+
+<script src="https://unpkg.com/lenis@1.1.19/dist/lenis.min.js"></script>
+<script>
+  const lenis = new Lenis({
+  duration: 1.2,
+  smooth: true,
+})
+
+function raf(time) {
+  lenis.raf(time)
+  requestAnimationFrame(raf)
+}
+
+requestAnimationFrame(raf)
+</script>
+
+
 </body>
 </html>

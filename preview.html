@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moncheez Mobile Simulator</title>
+  <meta name="description" content="Preview the Moncheez Social Links page inside a realistic mobile device frame." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/webp" href="https://i.ibb.co/RT1R5ZqJ/fav.webp" />
+  <style>
+    /* ─── Reset & Core Styles ──────────────────────────────── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-dark: #09090e;
+      --panel-bg: rgba(20, 20, 30, 0.6);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --accent: #b47cff;
+      --accent-hover: #c599ff;
+      --accent-glow: rgba(180, 124, 255, 0.4);
+      --accent-pink: #ff6fd8;
+      --text-main: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.6);
+      --font-family: 'Outfit', sans-serif;
+      
+      /* Phone frame casing colors */
+      --case-titanium: #8e8d8a;
+      --case-black: #2c2c2c;
+      --case-purple: #4e405a;
+      --case-gold: #e3d3c4;
+      
+      /* Selected device screen dimensions */
+      --screen-width: 393px;
+      --screen-height: 852px;
+      --case-color: var(--case-black);
+    }
+
+    body {
+
+
+
+      
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ─── Beautiful Background Orbs ──────────────────────── */
+    .bg-orbs {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.18;
+      animation: drift 15s ease-in-out infinite alternate;
+    }
+    .orb-1 {
+      width: 45vw;
+      height: 45vw;
+      background: var(--accent);
+      top: -10vw;
+      left: -10vw;
+    }
+    .orb-2 {
+      width: 40vw;
+      height: 40vw;
+      background: var(--accent-pink);
+      bottom: -10vw;
+      right: -10vw;
+      animation-duration: 20s;
+    }
+    .orb-3 {
+      width: 30vw;
+      height: 30vw;
+      background: #00c9ff;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-duration: 18s;
+    }
+
+    @keyframes drift {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(5vw, 5vh) scale(1.1); }
+    }
+
+    /* ─── Layout ─────────────────────────────────────────── */
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 28px;
+      background: rgba(9, 9, 14, 0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--panel-border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand img {
+      height: 28px;
+      width: auto;
+    }
+    .brand h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #fff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand span {
+      font-size: 0.75rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 2px 8px;
+      border-radius: 20px;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .header-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .header-links a:hover {
+      color: var(--text-main);
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      position: relative;
+      z-index: 5;
+      height: calc(100vh - 65px);
+    }
+
+    /* ─── Control Sidebar ───────────────────────────────── */
+    .controls-panel {
+      width: 320px;
+      background: var(--panel-bg);
+      border-right: 1px solid var(--panel-border);
+      backdrop-filter: blur(20px);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      overflow-y: auto;
+      z-index: 10;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .control-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    /* Custom select styling */
+    .custom-select {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      padding: 12px;
+      border-radius: 12px;
+      font-family: var(--font-family);
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .custom-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    /* Button Toggles */
+    .btn-group {
+      display: flex;
+      gap: 8px;
+    }
+    .toggle-btn {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      padding: 12px;
+      border-radius: 12px;
+      font-family: var(--font-family);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .toggle-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+      font-weight: 600;
+      box-shadow: 0 4px 12px var(--accent-glow);
+    }
+
+    /* Color Swatch Selector */
+    .color-selector {
+      display: flex;
+      gap: 12px;
+      padding: 4px 0;
+    }
+    .color-swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.2s, border-color 0.2s;
+      position: relative;
+    }
+    .color-swatch:hover {
+      transform: scale(1.1);
+    }
+    .color-swatch.active {
+      border-color: #fff;
+      transform: scale(1.15);
+    }
+    .swatch-titanium { background: var(--case-titanium); }
+    .swatch-black { background: var(--case-black); }
+    .swatch-purple { background: var(--case-purple); }
+    .swatch-gold { background: var(--case-gold); }
+
+    /* Action Buttons */
+    .action-btn {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 12px;
+      border-radius: 12px;
+      font-family: var(--font-family);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .action-btn:hover {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 4px 15px var(--accent-glow);
+    }
+    .action-btn-solid {
+      background: var(--accent);
+      color: #000;
+      border: none;
+    }
+    .action-btn-solid:hover {
+      background: var(--accent-hover);
+    }
+
+    /* ─── Simulator Canvas Area ────────────────────────── */
+    .simulator-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      overflow: auto;
+      position: relative;
+    }
+
+    /* ─── The Smartphone Mockup ────────────────────────── */
+    .phone-mockup {
+      position: relative;
+      width: calc(var(--screen-width) + 24px); /* Bezel size added */
+      height: calc(var(--screen-height) + 24px);
+      background: var(--case-color);
+      border-radius: 48px;
+      box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.8),
+                  0 0 0 4px rgba(255, 255, 255, 0.05) inset;
+      transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  background 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px; /* Outer Bezel thickness */
+    }
+
+    /* Side Buttons simulation */
+    .phone-mockup::before,
+    .phone-mockup::after {
+      content: '';
+      position: absolute;
+      background: var(--case-color);
+      border-radius: 4px;
+      filter: brightness(1.2);
+    }
+    /* Left Buttons (Volume) */
+    .phone-mockup .side-btn-left-1,
+    .phone-mockup .side-btn-left-2 {
+      position: absolute;
+      left: -3px;
+      width: 3px;
+      height: 48px;
+      background: var(--case-color);
+      filter: brightness(0.85);
+      border-radius: 3px 0 0 3px;
+    }
+    .phone-mockup .side-btn-left-1 { top: 120px; }
+    .phone-mockup .side-btn-left-2 { top: 180px; }
+    
+    /* Right Button (Power) */
+    .phone-mockup .side-btn-right {
+      position: absolute;
+      right: -3px;
+      top: 150px;
+      width: 3px;
+      height: 64px;
+      background: var(--case-color);
+      filter: brightness(0.85);
+      border-radius: 0 3px 3px 0;
+    }
+
+    /* Inner Screen container */
+    .phone-screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #0f0f14;
+      border-radius: 36px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5) inset;
+    }
+
+    /* Embedded Viewport Iframe */
+    .phone-iframe {
+      width: 100%;
+      flex: 1;
+      border: none;
+      background: #0f0f14;
+      transition: opacity 0.3s;
+    }
+
+    /* Screen Glare Overlay */
+    .screen-glare {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.12) 0%, 
+        rgba(255, 255, 255, 0.05) 30%, 
+        transparent 31%, 
+        transparent 100%
+      );
+      pointer-events: none;
+      z-index: 15;
+      border-radius: 36px;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    .screen-glare.hidden {
+      opacity: 0;
+    }
+
+    /* ─── Status Bar ───────────────────────────────────── */
+    .status-bar {
+      height: 44px;
+      padding: 0 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #ffffff;
+      background: transparent;
+      user-select: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+    
+    .status-time {
+      letter-spacing: -0.01em;
+      transition: opacity 0.2s;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .status-icons svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+    }
+
+    .battery-wrap {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .battery-level {
+      font-size: 0.72rem;
+    }
+
+    /* ─── Dynamic Island / Notch ───────────────────────── */
+    .dynamic-island {
+      position: absolute;
+      top: 11px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 28px;
+      background: #000000;
+      border-radius: 20px;
+      z-index: 25;
+      transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow: 0 0 4px rgba(255, 255, 255, 0.1) inset;
+    }
+    .dynamic-island:hover {
+      width: 130px;
+      height: 32px;
+      top: 9px;
+    }
+
+    /* ─── Home Indicator Bar ────────────────────────────── */
+    .home-indicator {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 130px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.35);
+      border-radius: 3px;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    /* Adjustments for Landscape Mode */
+    .phone-mockup.landscape {
+      width: calc(var(--screen-height) + 24px);
+      height: calc(var(--screen-width) + 24px);
+    }
+    
+    .phone-mockup.landscape .dynamic-island {
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      width: 80px;
+      height: 24px;
+    }
+    .phone-mockup.landscape .dynamic-island:hover {
+      width: 90px;
+      height: 28px;
+      left: 12px;
+    }
+
+    .phone-mockup.landscape .status-bar {
+      display: none; /* Hide standard status bar in horizontal orientation for simplicity */
+    }
+
+    .phone-mockup.landscape .home-indicator {
+      bottom: auto;
+      right: 8px;
+      left: auto;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 5px;
+      height: 130px;
+    }
+
+    /* Responsiveness for Simulator itself */
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column-reverse;
+        height: auto;
+        overflow-y: auto;
+      }
+      .controls-panel {
+        width: 100%;
+        border-right: none;
+        border-top: 1px solid var(--panel-border);
+        height: auto;
+        overflow-y: visible;
+      }
+      .simulator-container {
+        padding: 24px;
+        min-height: 550px;
+      }
+      .phone-mockup {
+        transform: scale(0.85); /* Slightly scale down on tablets */
+      }
+    }
+
+    @media (max-width: 480px) {
+      .phone-mockup {
+        transform: scale(0.68); /* Scale down further on small screens */
+      }
+      header {
+        padding: 12px 16px;
+      }
+      .brand h1 {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated Glowing Background Orbs -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Header Header -->
+  <header>
+    <div class="brand">
+      <img src="https://i.ibb.co/6cJLZVj7/Logo.webp" alt="Moncheez Logo" />
+      <h1>Moncheez</h1>
+      <span>Simulator</span>
+    </div>
+    <div class="header-links">
+      <a href="./index.html" target="_blank">Open Direct Site &nearr;</a>
+    </div>
+  </header>
+
+  <!-- Main Simulator Area -->
+  <main>
+    <!-- Left Configuration Sidebar -->
+    <div class="controls-panel">
+      <!-- Device Preset -->
+      <div class="control-group">
+        <span class="control-label">Device Preset</span>
+        <select id="devicePresetSelect" class="custom-select">
+          <option value="iphone15pro" data-w="393" data-h="852" selected>iPhone 15 Pro (393 × 852)</option>
+          <option value="galaxys24" data-w="360" data-h="780">Galaxy S24 (360 × 780)</option>
+          <option value="pixel8" data-w="412" data-h="915">Google Pixel 8 (412 × 915)</option>
+          <option value="iphonese" data-w="320" data-h="568">Compact SE (320 × 568)</option>
+        </select>
+      </div>
+
+      <!-- Orientation Toggle -->
+      <div class="control-group">
+        <span class="control-label">Orientation</span>
+        <div class="btn-group">
+          <button id="portraitBtn" class="toggle-btn active">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            Portrait
+          </button>
+          <button id="landscapeBtn" class="toggle-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" ry="2" transform="rotate(90 12 12)"></rect><line x1="18" y1="12" x2="18.01" y2="12"></line></svg>
+            Landscape
+          </button>
+        </div>
+      </div>
+
+      <!-- Case Color Selector -->
+      <div class="control-group">
+        <span class="control-label">Case Finish</span>
+        <div class="color-selector">
+          <div class="color-swatch swatch-black active" data-color="var(--case-black)" title="Space Black"></div>
+          <div class="color-swatch swatch-titanium" data-color="var(--case-titanium)" title="Natural Titanium"></div>
+          <div class="color-swatch swatch-purple" data-color="var(--case-purple)" title="Deep Purple"></div>
+          <div class="color-swatch swatch-gold" data-color="var(--case-gold)" title="Gold"></div>
+        </div>
+      </div>
+
+      <!-- Screen Glare Toggle -->
+      <div class="control-group">
+        <span class="control-label">Screen Effects</span>
+        <button id="glareToggleBtn" class="toggle-btn active">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          Glass Reflection
+        </button>
+      </div>
+
+      <!-- Divider line -->
+      <div style="height: 1px; background: var(--panel-border); margin: 4px 0;"></div>
+
+      <!-- Actions -->
+      <div class="control-group">
+        <span class="control-label">Actions</span>
+        <button id="reloadBtn" class="action-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          Reload Screen
+        </button>
+        <button id="copyBtn" class="action-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy Viewport Link
+        </button>
+        <button id="openTabBtn" class="action-btn action-btn-solid">
+          Open In New Tab &nearr;
+        </button>
+      </div>
+    </div>
+
+    <!-- Right Simulator Center Canvas -->
+    <div class="simulator-container">
+      
+      <!-- Simulated Phone Container -->
+      <div id="phoneMockup" class="phone-mockup">
+        
+        <!-- Interactive side buttons -->
+        <div class="side-btn-left-1"></div>
+        <div class="side-btn-left-2"></div>
+        <div class="side-btn-right"></div>
+
+        <!-- Phone screen -->
+        <div class="phone-screen">
+          
+          <!-- Virtual Status Bar -->
+          <div class="status-bar" id="statusBar">
+            <!-- Simulated local time -->
+            <span class="status-time" id="statusTime">09:41</span>
+            
+            <!-- Dynamic Island Spacer (centered) -->
+            <div></div>
+            
+            <!-- Connection icons and Battery -->
+            <div class="status-icons">
+              <!-- LTE / Cellular -->
+              <svg viewBox="0 0 24 24">
+                <path d="M2 22h20V2z" />
+              </svg>
+              <!-- Wifi -->
+              <svg viewBox="0 0 24 24">
+                <path d="M12 21l-12-12c4.4-4.4 11.6-4.4 16 0z" opacity="0.3"/>
+                <path d="M12 21l-9-9c3.3-3.3 8.7-3.3 12 0z" opacity="0.6"/>
+                <path d="M12 21l-6-6c2.2-2.2 5.8-2.2 8 0z" />
+              </svg>
+              <!-- Battery -->
+              <div class="battery-wrap">
+                <span id="batteryPercentage" class="battery-level">88%</span>
+                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px;">
+                  <!-- Battery Outer -->
+                  <path d="M17 6H3a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm1 10H3V8h14v8zm5-5h-2v2h2v-2z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Island notch -->
+          <div class="dynamic-island" id="dynamicIsland"></div>
+
+          <!-- Iframe viewport -->
+          <iframe id="viewportIframe" class="phone-iframe" src="./index.html"></iframe>
+
+          <!-- Glare effect -->
+          <div id="screenGlare" class="screen-glare"></div>
+
+          <!-- Virtual home indicator bar -->
+          <div class="home-indicator"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // ─── DOM References ─────────────────────────────────────
+    const phoneMockup = document.getElementById('phoneMockup');
+    const viewportIframe = document.getElementById('viewportIframe');
+    const devicePresetSelect = document.getElementById('devicePresetSelect');
+    const portraitBtn = document.getElementById('portraitBtn');
+    const landscapeBtn = document.getElementById('landscapeBtn');
+    const glareToggleBtn = document.getElementById('glareToggleBtn');
+    const screenGlare = document.getElementById('screenGlare');
+    const colorSwatches = document.querySelectorAll('.color-swatch');
+    const reloadBtn = document.getElementById('reloadBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const openTabBtn = document.getElementById('openTabBtn');
+    const statusTime = document.getElementById('statusTime');
+    const batteryPercentage = document.getElementById('batteryPercentage');
+
+    // ─── Status Bar Clocks & Battery simulation ────────────
+    function updateStatusBarTime() {
+      const now = new Date();
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      
+      // Pad with zeroes
+      hours = hours < 10 ? '0' + hours : hours;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      
+      statusTime.textContent = `${hours}:${minutes}`;
+    }
+    
+    // Initial clock trigger and periodic updates
+    updateStatusBarTime();
+    setInterval(updateStatusBarTime, 10000);
+
+    // Slowly decrease battery level for realism
+    let batteryVal = 88;
+    function updateBatteryVal() {
+      if (batteryVal > 5) {
+        batteryVal -= 1;
+        batteryPercentage.textContent = `${batteryVal}%`;
+      }
+    }
+    setInterval(updateBatteryVal, 60000);
+
+    // ─── Device Presets Selection ──────────────────────────
+    function applyDeviceSettings() {
+      const selectedOption = devicePresetSelect.options[devicePresetSelect.selectedIndex];
+      const width = selectedOption.getAttribute('data-w');
+      const height = selectedOption.getAttribute('data-h');
+      
+      // Update CSS variables
+      document.documentElement.style.setProperty('--screen-width', `${width}px`);
+      document.documentElement.style.setProperty('--screen-height', `${height}px`);
+    }
+
+    devicePresetSelect.addEventListener('change', applyDeviceSettings);
+
+    // ─── Orientation Controls ──────────────────────────────
+    portraitBtn.addEventListener('click', () => {
+      portraitBtn.classList.add('active');
+      landscapeBtn.classList.remove('active');
+      phoneMockup.classList.remove('landscape');
+    });
+
+    landscapeBtn.addEventListener('click', () => {
+      landscapeBtn.classList.add('active');
+      portraitBtn.classList.remove('active');
+      phoneMockup.classList.add('landscape');
+    });
+
+    // ─── Glare Control ──────────────────────────────────────
+    glareToggleBtn.addEventListener('click', () => {
+      glareToggleBtn.classList.toggle('active');
+      screenGlare.classList.toggle('hidden');
+    });
+
+    // ─── Phone Casing Color Customizer ─────────────────────
+    colorSwatches.forEach(swatch => {
+      swatch.addEventListener('click', () => {
+        // Remove active class from all
+        colorSwatches.forEach(s => s.classList.remove('active'));
+        // Add to clicked
+        swatch.classList.add('active');
+        // Apply color
+        const colorVal = swatch.getAttribute('data-color');
+        document.documentElement.style.setProperty('--case-color', colorVal);
+      });
+    });
+
+    // ─── Core Interaction Handlers ─────────────────────────
+    // Reload Screen
+    reloadBtn.addEventListener('click', () => {
+      viewportIframe.style.opacity = '0';
+      setTimeout(() => {
+        viewportIframe.src = viewportIframe.src;
+        viewportIframe.onload = () => {
+          viewportIframe.style.opacity = '1';
+        };
+      }, 200);
+    });
+
+    // Copy Viewport link
+    copyBtn.addEventListener('click', () => {
+      const absoluteUrl = window.location.origin + window.location.pathname.replace('preview.html', 'index.html');
+      navigator.clipboard.writeText(absoluteUrl).then(() => {
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = `
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          Link Copied!
+        `;
+        copyBtn.style.borderColor = '#25d366';
+        copyBtn.style.color = '#25d366';
+        
+        setTimeout(() => {
+          copyBtn.innerHTML = originalText;
+          copyBtn.style.borderColor = 'var(--accent)';
+          copyBtn.style.color = 'var(--accent)';
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
+    });
+
+    // Open direct site in new tab
+    openTabBtn.addEventListener('click', () => {
+      window.open('./index.html', '_blank');
+    });
+
+  </script>
+</body>
+</html>

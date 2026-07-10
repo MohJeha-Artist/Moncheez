@@ -44,7 +44,7 @@
     .bg-layer {
       position: absolute; inset: 0;
       background: linear-gradient(145deg, #1a0533 0%, #0d1b4b 60%, #0a0f1a 100%);
-      background-image: url('assets/background.webp');
+      background-image: url('https://i.ibb.co/zTnk5s5j/background.webp');
       background-size: cover;
       background-position: center;
       transition: background 0.5s ease;
@@ -84,12 +84,11 @@
     .content {
       position: relative;
       z-index: 2;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 60px 24px 0;
+      justify-content: flex-start;
+      padding: 64px 28px 48px;
       gap: 0;
       max-width: 480px;
       margin: 0 auto;
@@ -101,7 +100,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 36px;
+      margin-bottom: 44px;
       animation: fadeInDown 0.6s ease both;
     }
     .hero-logo img {
@@ -123,7 +122,7 @@
       z-index: 2;
       width: 100%;
       display: block;
-      margin-top: 40px;
+      margin-top: 56px;
       animation: fadeInUp 0.7s ease 0.3s both;
     }
     .chips-img img {
@@ -137,6 +136,27 @@
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+
+    /* ─── Copyright Footer ──────────────────────────────── */
+    .copyright {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      text-align: center;
+      padding: 20px 24px 28px;
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .copyright a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .copyright a:hover { color: rgba(255,255,255,0.85); }
 
     .name {
       font-size: 1.55rem;
@@ -168,7 +188,7 @@
     .links {
       display: flex;
       flex-direction: column;
-      gap: 13px;
+      gap: 14px;
       width: 100%;
     }
 
@@ -354,7 +374,7 @@
 
   <!-- Main Content -->
   <div class="content">
-    <div class="hero-logo"><img src="assets/Logo.webp" alt="Moncheez Logo" /></div>
+    <div class="hero-logo"><img src="https://i.ibb.co/6cJLZVj7/Logo.webp" alt="Moncheez Logo" /></div>
 
     <div class="links">
       <!-- Facebook -->
@@ -395,7 +415,12 @@
     </div>
   </div>
 
-  <div class="chips-img"><img src="assets/Chips.webp" alt="Moncheez Chips" /></div>
+  <div class="chips-img"><img src="https://i.ibb.co/8nbTHmzB/Chips.webp" alt="Moncheez Chips" /></div>
+
+  <footer class="copyright">
+    &copy; 2025 Moncheez. All rights reserved.
+  </footer>
+
 </div>
 
 <script>

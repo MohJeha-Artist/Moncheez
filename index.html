@@ -51,6 +51,7 @@
     .bg-layer {
       position: absolute; inset: 0;
       background: linear-gradient(145deg, #1a0533 0%, #0d1b4b 60%, #0a0f1a 100%);
+      background-image: url('assets/background.webp');
       background-size: cover;
       background-position: center;
       transition: background 0.5s ease;
@@ -445,9 +446,12 @@
     fileInput.value = '';
   });
 
-  // Reset background
+  // Reset background to default
+  const DEFAULT_BG = "url('assets/background.webp')";
   resetBtn.addEventListener('click', () => {
-    bgLayer.style.backgroundImage = '';
+    bgLayer.style.backgroundImage = DEFAULT_BG;
+    bgLayer.style.backgroundSize  = 'cover';
+    bgLayer.style.backgroundPosition = 'center';
     uploadPanel.classList.remove('open');
   });
 
